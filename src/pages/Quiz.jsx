@@ -4,9 +4,7 @@ import React from "react";
 import QuizComponents from "../components/quiz/Quiz";
 
 const QuizPage = () => {
-    return (
-        <QuizComponents />
-    )
-}
+  return <QuizComponents />;
+};
 
 export default QuizPage;
