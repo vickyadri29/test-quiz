@@ -29,6 +29,7 @@
     margin: 1.5rem 4rem;
     width: 300px;
     height: 50px;
+    font-size: 1rem;
     font-weight: 500;
     border: none;
     border-radius: 5px;
@@ -39,4 +40,23 @@
 .btn-answer:hover {
     transition: 100ms ease-in-out;
     transform: scale(1.05);
+}
+
+.green-btn {
+    color: #2dbe09;
+}
+
+.red-btn {
+    color: #d10101;
+}
+
+.next-btn {
+    background-color: #d10101;
+    color: #ffffff;
+    width: 150px;
+    height: 40px;
+    font-weight: 500;
+    border: 1px solid #21295c;
+    border-radius: 5px;
+
 }
