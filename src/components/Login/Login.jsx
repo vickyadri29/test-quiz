@@ -27,7 +27,7 @@ const LoginComponents = () => {
   return (
     <div>
       <div className="content">
-        <h1>Test DOT Indonesia - Quiz</h1>
+        <h1>Challenge FE | DOT Indonesia - Quiz</h1>
         <div className="login-content">
           <h2>Login</h2>
           <Formik
