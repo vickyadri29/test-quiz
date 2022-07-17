@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Question from "../Question/Question";
+import { useTimer } from "react-timer-hook";
 import axios from "axios";
+import "./style.css";
 
 const BASE_URL =
   "https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple";
@@ -10,6 +12,56 @@ const Quiz = () => {
   const [index, setIndex] = useState(0);
   const [point, setPoint] = useState(0);
   const [showAnswers, setShowAnswers] = useState(false);
+  const [quizEnd, setQuizEnd] = useState(false);
+  const [answers, setAnswers] = useState({
+    correct: 0,
+    incorrect: 0,
+    answered: 0,
+  });
+
+  const time = new Date();
+  time.setSeconds(time.getSeconds() + 20);
+
+  const { seconds, minutes, hours, pause } = useTimer({
+    expiryTimestamp: time,
+    onExpire: () => {
+      if (index >= questions.length) {
+        pause();
+      }
+      alert("Waktu Habis :)");
+      setQuizEnd(true);
+    },
+  });
+  console.log(answers);
+
+  const handleForAnswer = (answer) => {
+    if (!showAnswers) {
+      if (answer === questions[index].correct_answer) {
+        setPoint(point + 10);
+        const newAnswer = { ...answers };
+        newAnswer.correct = newAnswer.correct += 1;
+        newAnswer.answered = newAnswer.answered += 1;
+        setAnswers(newAnswer);
+      } else {
+        const newAnswer = { ...answers };
+        newAnswer.incorrect = newAnswer.incorrect += 1;
+        newAnswer.answered = newAnswer.answered += 1;
+        setAnswers(newAnswer);
+      }
+    }
+
+    // setShowAnswers(true);
+    setIndex(index + 1);
+  };
+
+  const handleForNext = () => {
+    setIndex(index + 1);
+    setShowAnswers(false);
+  };
+
+  useEffect(() => {
+    document.title = "Test - Quiz";
+  }, []);
 
   useEffect(() => {
     axios
@@ -27,36 +79,36 @@ const Quiz = () => {
       });
   }, []);
 
-  const handleForAnswer = (answer) => {
-    if (!showAnswers) {
-      if (answer === questions[index].correct_answer) {
-        setPoint(point + 10);
-      }
-    }
-
-    setShowAnswers(true);
-  };
-
-  const handleForNext = () => {
-    setIndex(index + 1);
-    setShowAnswers(false);
-  };
-
   return questions.length > 0 ? (
-    <div>
-      {index >= questions.length ? (
-        <h3>Selesai! Poin anda {point}</h3>
+    <div className="container">
+      {index >= questions.length || quizEnd ? (
+        <div>
+          <h1>Selesai! Poin anda {point}</h1>
+          <h1>Jawaban benar : {answers.correct}</h1>
+          <h1>Jawaban Salah : {answers.incorrect}</h1>
+          <h1>Total Jawab: {answers.answered}</h1>
+        </div>
       ) : (
-        <Question
-          data={questions[index]}
-          handleForAnswer={handleForAnswer}
-          showAnswers={showAnswers}
-          handleForNext={handleForNext}
-        />
+        <div>
+          <p>
+            Waktu anda : {hours}:{minutes}:{seconds}
+          </p>
+          <Question
+            data={questions[index]}
+            handleForAnswer={handleForAnswer}
+            showAnswers={showAnswers}
+            handleForNext={handleForNext}
+            index={index}
+          />
+        </div>
       )}
     </div>
   ) : (
-    "Wait a minute..."
+    <div className="container-spin">
+      <div className="spinner-container">
+        <div className="loading-spinner"></div>
+      </div>
+    </div>
   );
 };
 
