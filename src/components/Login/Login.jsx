@@ -10,12 +10,13 @@ import GoogleLogo from "../../img/google-logo.png";
 // Validate Login
 const LoginSchema = yup.object().shape({
   username: yup.string().required("Please enter your username"),
-  password: yup.string()
-  .required('Please Enter your password')
-  .matches(
-    /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-    "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character")
+  password: yup.string().required("Please Enter your password"),
 });
+
+const Login = {
+  username: "admin",
+  password: "admin",
+};
 
 const LoginComponents = () => {
   // const navigate = useNavigate();
@@ -32,8 +33,8 @@ const LoginComponents = () => {
           <h2>Login</h2>
           <Formik
             initialValues={{
-              username: "",
-              password: "",
+              username: "admin",
+              password: "admin",
             }}
             validationSchema={LoginSchema}
             onSubmit={(values) => {
@@ -42,12 +43,10 @@ const LoginComponents = () => {
           >
             {({ errors, touched }) => (
               <Form>
-                <Link to={"/quiz"}>
                   <button type="submit" className="btn-google">
                     <img src={GoogleLogo} alt="Google-logo" width="20" />
                     <span className="name-btn">Sign in with Google</span>
                   </button>
-                </Link>
                 <div className="other-sign-in">
                   <span>—— or sign in with ——</span>
                 </div>

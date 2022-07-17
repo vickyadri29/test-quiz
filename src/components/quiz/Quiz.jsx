@@ -35,7 +35,6 @@ const Quiz = () => {
       setQuizEnd(true);
     },
   });
-  console.log(answers);
 
   const handleForAnswer = (answer) => {
     if (!showAnswers) {
