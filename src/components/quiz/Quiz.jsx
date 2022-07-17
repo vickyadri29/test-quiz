@@ -4,8 +4,13 @@ import { useTimer } from "react-timer-hook";
 import axios from "axios";
 import "./style.css";
 
+// Import icon
+import iconTimer from "../../img/timer.png";
+import iconCorrect from "../../img/correct.png";
+import iconIncorrect from "../../img/incorrect.png";
+
 const BASE_URL =
-  "https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple";
+  "https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple";
 
 const Quiz = () => {
   const [questions, setQuestions] = useState([]);
@@ -20,15 +25,13 @@ const Quiz = () => {
   });
 
   const time = new Date();
-  time.setSeconds(time.getSeconds() + 20);
+  time.setSeconds(time.getSeconds() + 1200);
 
-  const { seconds, minutes, hours, pause } = useTimer({
+  const { seconds, minutes, hours } = useTimer({
     expiryTimestamp: time,
     onExpire: () => {
       if (index >= questions.length) {
-        pause();
       }
-      alert("Waktu Habis :)");
       setQuizEnd(true);
     },
   });
@@ -49,8 +52,6 @@ const Quiz = () => {
         setAnswers(newAnswer);
       }
     }
-
-    // setShowAnswers(true);
     setIndex(index + 1);
   };
 
@@ -80,19 +81,31 @@ const Quiz = () => {
   }, []);
 
   return questions.length > 0 ? (
-    <div className="container">
+    <div className="containers">
       {index >= questions.length || quizEnd ? (
-        <div>
-          <h1>Selesai! Poin anda {point}</h1>
-          <h1>Jawaban benar : {answers.correct}</h1>
-          <h1>Jawaban Salah : {answers.incorrect}</h1>
-          <h1>Total Jawab: {answers.answered}</h1>
+        <div className="results">
+          <h1>Finished!</h1>
+          <h1>Here is your Score : {point}</h1>
+          <div className="result-question">
+            <div className="correct">
+              <img src={iconCorrect} alt="correct answer" width="20" />
+              <span>{answers.correct}</span>
+            </div>
+            <div className="incorrect">
+              <img src={iconIncorrect} alt="correct answer" width="20" />
+              <span>{answers.incorrect}</span>
+            </div>
+          </div>
+          <h3>Total Answered {answers.answered}</h3>
         </div>
       ) : (
         <div>
-          <p>
-            Waktu anda : {hours}:{minutes}:{seconds}
-          </p>
+          <div className="countdown">
+            <img src={iconTimer} alt="icon" width="20" />
+            <span>
+              {hours}:{minutes}:{seconds}
+            </span>
+          </div>
           <Question
             data={questions[index]}
             handleForAnswer={handleForAnswer}
